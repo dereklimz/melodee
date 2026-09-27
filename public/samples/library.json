@@ -1,0 +1,74 @@
+{
+  "lanes": {
+    "kick": [
+      { "id": "kick-deep", "name": "Deep Kick", "file": "kick-deep.wav", "rootNote": null },
+      { "id": "kick-punchy", "name": "Punchy Kick", "file": "kick-punchy.wav", "rootNote": null },
+      { "id": "kick-sub", "name": "Sub Kick", "file": "kick-sub.wav", "rootNote": null },
+      { "id": "kick-clicky", "name": "Clicky Kick", "file": "kick-clicky.wav", "rootNote": null },
+      { "id": "kick-analog", "name": "Analog Kick", "file": "kick-analog.wav", "rootNote": null }
+    ],
+    "clap": [
+      { "id": "clap-tight", "name": "Tight Clap", "file": "clap-tight.wav", "rootNote": null },
+      { "id": "clap-snappy", "name": "Snappy Clap", "file": "clap-snappy.wav", "rootNote": null },
+      { "id": "clap-layered", "name": "Layered Clap", "file": "clap-layered.wav", "rootNote": null },
+      { "id": "clap-vinyl", "name": "Vinyl Clap", "file": "clap-vinyl.wav", "rootNote": null },
+      { "id": "clap-808", "name": "808 Clap", "file": "clap-808.wav", "rootNote": null }
+    ],
+    "hats": [
+      { "id": "hat-closed-crisp", "name": "Crisp Closed", "file": "hat-closed-crisp.wav", "rootNote": null, "tag": "closed" },
+      { "id": "hat-closed-dark", "name": "Dark Closed", "file": "hat-closed-dark.wav", "rootNote": null, "tag": "closed" },
+      { "id": "hat-closed-metallic", "name": "Metallic Closed", "file": "hat-closed-metallic.wav", "rootNote": null, "tag": "closed" },
+      { "id": "hat-open-bright", "name": "Bright Open", "file": "hat-open-bright.wav", "rootNote": null, "tag": "open" },
+      { "id": "hat-open-warm", "name": "Warm Open", "file": "hat-open-warm.wav", "rootNote": null, "tag": "open" }
+    ],
+    "perc": [
+      { "id": "perc-shaker", "name": "Shaker", "file": "perc-shaker.wav", "rootNote": null },
+      { "id": "perc-conga", "name": "Conga", "file": "perc-conga.wav", "rootNote": null },
+      { "id": "perc-rim", "name": "Rimshot", "file": "perc-rim.wav", "rootNote": null },
+      { "id": "perc-tom", "name": "Tom Hit", "file": "perc-tom.wav", "rootNote": null },
+      { "id": "perc-clave", "name": "Clave", "file": "perc-clave.wav", "rootNote": null }
+    ],
+    "bass": [
+      { "id": "bass-warm", "name": "Warm Bass", "file": "bass-warm.wav", "rootNote": 36 },
+      { "id": "bass-bright", "name": "Bright Bass", "file": "bass-bright.wav", "rootNote": 36 },
+      { "id": "bass-sub", "name": "Sub Bass", "file": "bass-sub.wav", "rootNote": 36 },
+      { "id": "bass-reese", "name": "Reese Bass", "file": "bass-reese.wav", "rootNote": 36 },
+      { "id": "bass-pluck", "name": "Pluck Bass", "file": "bass-pluck.wav", "rootNote": 36 }
+    ],
+    "chords": [
+      { "id": "chords-stab-punchy", "name": "Punchy Stab", "file": "chords-stab-punchy.wav", "rootNote": 60, "tag": "stab" },
+      { "id": "chords-stab-soft", "name": "Soft Stab", "file": "chords-stab-soft.wav", "rootNote": 60, "tag": "stab" },
+      { "id": "chords-piano", "name": "Piano", "file": "chords-piano.wav", "rootNote": 60 },
+      { "id": "chords-epiano", "name": "Electric Piano", "file": "chords-epiano.wav", "rootNote": 60 },
+      { "id": "chords-pluck-keys", "name": "Pluck Keys", "file": "chords-pluck-keys.wav", "rootNote": 60 }
+    ],
+    "pad": [
+      { "id": "pad-lush", "name": "Lush Pad", "file": "pad-lush.wav", "rootNote": 60 },
+      { "id": "pad-ambient", "name": "Ambient Pad", "file": "pad-ambient.wav", "rootNote": 60 },
+      { "id": "pad-warm-strings", "name": "Warm Strings", "file": "pad-warm-strings.wav", "rootNote": 60 },
+      { "id": "pad-choir", "name": "Choir Pad", "file": "pad-choir.wav", "rootNote": 60 },
+      { "id": "pad-analog", "name": "Analog Pad", "file": "pad-analog.wav", "rootNote": 60 }
+    ],
+    "lead": [
+      { "id": "lead-synth-bright", "name": "Bright Synth", "file": "lead-synth-bright.wav", "rootNote": 60 },
+      { "id": "lead-pluck", "name": "Pluck", "file": "lead-pluck.wav", "rootNote": 60 },
+      { "id": "lead-supersaw", "name": "Supersaw", "file": "lead-supersaw.wav", "rootNote": 60 },
+      { "id": "lead-arp-seq", "name": "Arp Sequence", "file": "lead-arp-seq.wav", "rootNote": 60 },
+      { "id": "lead-vocal-chop", "name": "Vocal Chop Lead", "file": "lead-vocal-chop.wav", "rootNote": 60 }
+    ],
+    "vocal": [
+      { "id": "vocal-chop-bright", "name": "Bright Chop", "file": "vocal-chop-bright.wav", "rootNote": 60 },
+      { "id": "vocal-chop-dark", "name": "Dark Chop", "file": "vocal-chop-dark.wav", "rootNote": 60 },
+      { "id": "vocal-pitched-up", "name": "Pitched Up Chop", "file": "vocal-pitched-up.wav", "rootNote": 60 },
+      { "id": "vocal-airy", "name": "Airy Chop", "file": "vocal-airy.wav", "rootNote": 60 },
+      { "id": "vocal-formant", "name": "Formant Chop", "file": "vocal-formant.wav", "rootNote": 60 }
+    ],
+    "ear-candy": [
+      { "id": "riser-subtle", "name": "Subtle Riser", "file": "riser-subtle.wav" },
+      { "id": "impact-hard", "name": "Hard Impact", "file": "impact-hard.wav" },
+      { "id": "sweep-white-noise", "name": "White Noise Sweep", "file": "sweep-white-noise.wav" },
+      { "id": "reverse-cymbal", "name": "Reverse Cymbal", "file": "reverse-cymbal.wav" },
+      { "id": "downlifter", "name": "Downlifter", "file": "downlifter.wav" }
+    ]
+  }
+}

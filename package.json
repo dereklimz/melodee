@@ -1,0 +1,31 @@
+{
+  "name": "melodee",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@testing-library/react": "^16.3.3",
+    "@tonejs/midi": "^2.0.28",
+    "happy-dom": "^20.14.5",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tone": "^15.1.22",
+    "vitest": "^4.1.11",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "oxlint": "^1.81.0",
+    "typescript": "~6.0.2",
+    "vite": "^4.5.14"
+  }
+}

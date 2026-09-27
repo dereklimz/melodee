@@ -1,0 +1,310 @@
+{
+  "song": {
+    "id": "demo-track",
+    "title": "Digital Dreams",
+    "artist": "Synth Wave",
+    "durationSec": 243,
+    "bpm": 128,
+    "timeSignature": [4, 4],
+    "firstDownbeatSec": 0.02,
+    "bars": 128,
+    "key": {
+      "tonic": "A",
+      "mode": "minor",
+      "camelot": "8A"
+    },
+    "lufsIntegrated": -8.2,
+    "genre": "Progressive House"
+  },
+  "waveformPeaks": [0.02, 0.05, 0.08, 0.12, 0.15, 0.18, 0.20, 0.22, 0.24, 0.26, 0.27, 0.28, 0.29, 0.30, 0.31, 0.31, 0.32, 0.32, 0.33, 0.34, 0.34, 0.35, 0.36, 0.36, 0.37, 0.37, 0.38, 0.38, 0.39, 0.39, 0.40, 0.41, 0.42, 0.43, 0.44, 0.45, 0.47, 0.49, 0.51, 0.53, 0.55, 0.57, 0.59, 0.61, 0.62, 0.64, 0.65, 0.67, 0.68, 0.70, 0.71, 0.72, 0.73, 0.74, 0.75, 0.76, 0.77, 0.78, 0.79, 0.80, 0.81, 0.82, 0.83, 0.84, 0.85, 0.86, 0.87, 0.88, 0.88, 0.89, 0.89, 0.90, 0.90, 0.91, 0.91, 0.92, 0.92, 0.92, 0.93, 0.93, 0.93, 0.94, 0.94, 0.94, 0.95, 0.95, 0.95, 0.95, 0.96, 0.96, 0.96, 0.96, 0.96, 0.85, 0.82, 0.78, 0.72, 0.68, 0.63, 0.58, 0.53, 0.48, 0.44, 0.40, 0.37, 0.35, 0.34, 0.34, 0.35, 0.37, 0.40, 0.44, 0.49, 0.55, 0.61, 0.67, 0.72, 0.76, 0.79, 0.80, 0.81, 0.80, 0.78, 0.75, 0.71, 0.66, 0.60, 0.54, 0.48, 0.42, 0.38, 0.35, 0.33, 0.33, 0.35, 0.38, 0.42, 0.48, 0.55, 0.63, 0.71, 0.78, 0.82, 0.84, 0.84, 0.82, 0.78, 0.72, 0.65, 0.57, 0.49, 0.41, 0.35, 0.30, 0.27, 0.26, 0.27, 0.30, 0.35, 0.41, 0.49, 0.57, 0.65, 0.72, 0.78, 0.82, 0.84, 0.84, 0.82, 0.78, 0.72, 0.65, 0.57, 0.49, 0.41, 0.35, 0.30],
+  "sections": [
+    { "id": "intro", "type": "intro", "label": "Intro", "startBar": 0, "endBar": 16, "energyLevel": "low" },
+    { "id": "build1", "type": "build", "label": "Build 1", "startBar": 16, "endBar": 32, "energyLevel": "medium" },
+    { "id": "drop1", "type": "drop", "label": "Drop 1", "startBar": 32, "endBar": 48, "energyLevel": "high" },
+    { "id": "breakdown", "type": "breakdown", "label": "Breakdown", "startBar": 48, "endBar": 64, "energyLevel": "low" },
+    { "id": "build2", "type": "build", "label": "Build 2", "startBar": 64, "endBar": 80, "energyLevel": "medium" },
+    { "id": "drop2", "type": "drop", "label": "Drop 2", "startBar": 80, "endBar": 112, "energyLevel": "high" },
+    { "id": "outro", "type": "outro", "label": "Outro", "startBar": 112, "endBar": 128, "energyLevel": "low" }
+  ],
+  "energy": [
+    { "beat": 0, "value": 5 },
+    { "beat": 8, "value": 10 },
+    { "beat": 16, "value": 15 },
+    { "beat": 32, "value": 25 },
+    { "beat": 48, "value": 85 },
+    { "beat": 64, "value": 20 },
+    { "beat": 80, "value": 35 },
+    { "beat": 96, "value": 90 },
+    { "beat": 128, "value": 10 }
+  ],
+  "chords": [
+    { "bar": 0, "symbol": "Am", "root": "A", "pitches": [57, 60, 64] },
+    { "bar": 4, "symbol": "F", "root": "F", "pitches": [53, 57, 60] },
+    { "bar": 8, "symbol": "C", "root": "C", "pitches": [48, 52, 55] },
+    { "bar": 12, "symbol": "G", "root": "G", "pitches": [55, 59, 62] },
+    { "bar": 16, "symbol": "Am", "root": "A", "pitches": [57, 60, 64] },
+    { "bar": 32, "symbol": "Am", "root": "A", "pitches": [57, 60, 64] },
+    { "bar": 48, "symbol": "F", "root": "F", "pitches": [53, 57, 60] },
+    { "bar": 64, "symbol": "Am", "root": "A", "pitches": [57, 60, 64] },
+    { "bar": 80, "symbol": "Am", "root": "A", "pitches": [57, 60, 64] }
+  ],
+  "stems": [
+    { "id": "mix", "file": "mix.flac", "channels": 2 },
+    { "id": "kick", "file": "kick.flac", "channels": 1 },
+    { "id": "clap", "file": "clap.flac", "channels": 1 },
+    { "id": "hats", "file": "hats.flac", "channels": 2 },
+    { "id": "perc", "file": "perc.flac", "channels": 2 },
+    { "id": "bass", "file": "bass.flac", "channels": 1 },
+    { "id": "other", "file": "other.flac", "channels": 2 },
+    { "id": "vocals", "file": "vocals.flac", "channels": 2 }
+  ],
+  "lanes": [
+    {
+      "id": "kick",
+      "name": "Kick",
+      "stemId": "kick",
+      "sharedWith": [],
+      "clips": [
+        {
+          "id": "kick-drop1",
+          "sectionId": "drop1",
+          "startBar": 32,
+          "endBar": 48,
+          "notes": [
+            { "beat": 32, "pitch": 36, "durBeats": 0.5, "vel": 100 },
+            { "beat": 33, "pitch": 36, "durBeats": 0.5, "vel": 80 },
+            { "beat": 34, "pitch": 36, "durBeats": 0.5, "vel": 100 },
+            { "beat": 35, "pitch": 36, "durBeats": 0.5, "vel": 80 }
+          ]
+        },
+        {
+          "id": "kick-drop2",
+          "sectionId": "drop2",
+          "startBar": 80,
+          "endBar": 112,
+          "notes": [
+            { "beat": 80, "pitch": 36, "durBeats": 0.5, "vel": 100 },
+            { "beat": 81, "pitch": 36, "durBeats": 0.5, "vel": 85 },
+            { "beat": 82, "pitch": 36, "durBeats": 0.5, "vel": 100 },
+            { "beat": 83, "pitch": 36, "durBeats": 0.5, "vel": 85 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "clap",
+      "name": "Clap",
+      "stemId": "clap",
+      "sharedWith": [],
+      "clips": [
+        {
+          "id": "clap-build1",
+          "sectionId": "build1",
+          "startBar": 16,
+          "endBar": 32,
+          "notes": [
+            { "beat": 18, "pitch": 39, "durBeats": 0.25, "vel": 90 },
+            { "beat": 20, "pitch": 39, "durBeats": 0.25, "vel": 90 },
+            { "beat": 22, "pitch": 39, "durBeats": 0.25, "vel": 90 },
+            { "beat": 24, "pitch": 39, "durBeats": 0.25, "vel": 90 }
+          ]
+        },
+        {
+          "id": "clap-drop1",
+          "sectionId": "drop1",
+          "startBar": 32,
+          "endBar": 48,
+          "notes": [
+            { "beat": 34, "pitch": 39, "durBeats": 0.25, "vel": 95 },
+            { "beat": 36, "pitch": 39, "durBeats": 0.25, "vel": 95 },
+            { "beat": 38, "pitch": 39, "durBeats": 0.25, "vel": 95 },
+            { "beat": 40, "pitch": 39, "durBeats": 0.25, "vel": 95 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hats",
+      "name": "Hats",
+      "stemId": "hats",
+      "sharedWith": [],
+      "clips": [
+        {
+          "id": "hats-intro",
+          "sectionId": "intro",
+          "startBar": 0,
+          "endBar": 16,
+          "notes": [
+            { "beat": 0, "pitch": 42, "durBeats": 0.25, "vel": 60 },
+            { "beat": 1, "pitch": 46, "durBeats": 0.25, "vel": 70 },
+            { "beat": 2, "pitch": 42, "durBeats": 0.25, "vel": 60 },
+            { "beat": 3, "pitch": 46, "durBeats": 0.25, "vel": 70 }
+          ]
+        },
+        {
+          "id": "hats-drop1",
+          "sectionId": "drop1",
+          "startBar": 32,
+          "endBar": 48,
+          "notes": [
+            { "beat": 32, "pitch": 42, "durBeats": 0.125, "vel": 75 },
+            { "beat": 32.5, "pitch": 46, "durBeats": 0.125, "vel": 65 },
+            { "beat": 33, "pitch": 42, "durBeats": 0.125, "vel": 75 },
+            { "beat": 33.5, "pitch": 46, "durBeats": 0.125, "vel": 65 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "perc",
+      "name": "Perc",
+      "stemId": "perc",
+      "sharedWith": [],
+      "clips": [
+        {
+          "id": "perc-drop1",
+          "sectionId": "drop1",
+          "startBar": 32,
+          "endBar": 48,
+          "notes": [
+            { "beat": 32.75, "pitch": 60, "durBeats": 0.125, "vel": 70 },
+            { "beat": 34.75, "pitch": 62, "durBeats": 0.125, "vel": 70 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bass",
+      "name": "Bass",
+      "stemId": "bass",
+      "sharedWith": [],
+      "clips": [
+        {
+          "id": "bass-build1",
+          "sectionId": "build1",
+          "startBar": 16,
+          "endBar": 32,
+          "notes": [
+            { "beat": 16, "pitch": 45, "durBeats": 2, "vel": 85 },
+            { "beat": 20, "pitch": 48, "durBeats": 2, "vel": 85 },
+            { "beat": 24, "pitch": 45, "durBeats": 4, "vel": 90 }
+          ]
+        },
+        {
+          "id": "bass-drop1",
+          "sectionId": "drop1",
+          "startBar": 32,
+          "endBar": 48,
+          "notes": [
+            { "beat": 32, "pitch": 45, "durBeats": 1, "vel": 95 },
+            { "beat": 33, "pitch": 48, "durBeats": 1, "vel": 90 },
+            { "beat": 34, "pitch": 45, "durBeats": 1, "vel": 95 },
+            { "beat": 35, "pitch": 48, "durBeats": 1, "vel": 90 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chords",
+      "name": "Chords",
+      "stemId": "other",
+      "sharedWith": ["pad", "lead"],
+      "clips": [
+        {
+          "id": "chords-build1",
+          "sectionId": "build1",
+          "startBar": 16,
+          "endBar": 32,
+          "notes": [
+            { "beat": 16, "pitch": 57, "durBeats": 4, "vel": 80 },
+            { "beat": 20, "pitch": 60, "durBeats": 4, "vel": 80 },
+            { "beat": 24, "pitch": 64, "durBeats": 4, "vel": 80 },
+            { "beat": 28, "pitch": 57, "durBeats": 4, "vel": 80 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pad",
+      "name": "Pad",
+      "stemId": "other",
+      "sharedWith": ["chords", "lead"],
+      "clips": [
+        {
+          "id": "pad-intro",
+          "sectionId": "intro",
+          "startBar": 0,
+          "endBar": 16,
+          "notes": [
+            { "beat": 0, "pitch": 60, "durBeats": 8, "vel": 70 },
+            { "beat": 8, "pitch": 64, "durBeats": 8, "vel": 70 }
+          ]
+        },
+        {
+          "id": "pad-drop1",
+          "sectionId": "drop1",
+          "startBar": 32,
+          "endBar": 48,
+          "notes": [
+            { "beat": 32, "pitch": 57, "durBeats": 16, "vel": 60 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lead",
+      "name": "Lead",
+      "stemId": "other",
+      "sharedWith": ["chords", "pad"],
+      "clips": [
+        {
+          "id": "lead-drop1",
+          "sectionId": "drop1",
+          "startBar": 32,
+          "endBar": 48,
+          "notes": [
+            { "beat": 40, "pitch": 69, "durBeats": 0.5, "vel": 85 },
+            { "beat": 40.75, "pitch": 71, "durBeats": 0.5, "vel": 85 },
+            { "beat": 41.5, "pitch": 72, "durBeats": 0.5, "vel": 85 },
+            { "beat": 42.25, "pitch": 71, "durBeats": 0.5, "vel": 85 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vocal",
+      "name": "Vocal",
+      "stemId": "vocals",
+      "sharedWith": [],
+      "clips": [
+        {
+          "id": "vocal-breakdown",
+          "sectionId": "breakdown",
+          "startBar": 48,
+          "endBar": 64,
+          "notes": [
+            { "beat": 48, "pitch": 64, "durBeats": 2, "vel": 90 },
+            { "beat": 52, "pitch": 67, "durBeats": 2, "vel": 90 },
+            { "beat": 56, "pitch": 71, "durBeats": 2, "vel": 90 },
+            { "beat": 60, "pitch": 67, "durBeats": 2, "vel": 90 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ear-candy",
+      "name": "Ear Candy",
+      "stemId": null,
+      "sharedWith": [],
+      "clips": []
+    }
+  ],
+  "events": [
+    { "beat": 32, "type": "riser", "durBeats": 2, "label": "Riser into Drop" },
+    { "beat": 32, "type": "impact", "durBeats": 0.5, "label": "Drop kick impact" },
+    { "beat": 48, "type": "reverse_cymbal", "durBeats": 1.5, "label": "Reverse cym" },
+    { "beat": 80, "type": "riser", "durBeats": 2, "label": "Riser into Drop 2" },
+    { "beat": 80, "type": "impact", "durBeats": 0.5, "label": "Drop 2 impact" },
+    { "beat": 112, "type": "silence_gap", "durBeats": 1, "label": "Outro gap" }
+  ]
+}

@@ -1,0 +1,202 @@
+.workspace {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-ground);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--color-line);
+  flex-shrink: 0;
+  gap: 24px;
+  background: linear-gradient(180deg, #171B21 0%, var(--color-ground) 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03), 0 4px 12px rgba(0, 0, 0, 0.25);
+  position: relative;
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: 1;
+  min-width: 0;
+}
+
+.header .product-name {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin: 0;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+  text-shadow: 0 0 18px rgba(245, 184, 75, 0.25);
+}
+
+.header-info {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.info-chip {
+  font-size: 11.5px;
+  color: var(--color-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 4px 9px;
+  background-color: var(--color-raised);
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+}
+
+.info-chip.mono {
+  font-family: ui-monospace, 'SF Mono', 'Courier New', monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+.header-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.main-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.song-line {
+  height: 80px;
+  border-bottom: 1px solid var(--color-line);
+  flex-shrink: 0;
+  background-color: var(--color-panel);
+}
+
+.song-line canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.structure {
+  height: 36px;
+  border-bottom: 1px solid var(--color-line);
+  flex-shrink: 0;
+  background-color: var(--color-panel);
+  display: flex;
+}
+
+.energy {
+  height: 110px;
+  border-bottom: 1px solid var(--color-line);
+  flex-shrink: 0;
+  background-color: var(--color-panel);
+}
+
+.energy canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.lanes {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 56px;
+  padding: 0 24px;
+  border-top: 1px solid var(--color-line);
+  flex-shrink: 0;
+  background: linear-gradient(0deg, #171B21 0%, var(--color-panel) 100%);
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.03), 0 -4px 12px rgba(0, 0, 0, 0.25);
+  position: relative;
+  z-index: 10;
+}
+
+.position {
+  min-width: 92px;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.transport-spacer {
+  flex: 1;
+}
+
+.volume-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-muted);
+  letter-spacing: 0.04em;
+}
+
+.master-volume {
+  width: 70px;
+  accent-color: var(--color-accent);
+}
+
+.loop-toggle.active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 10px rgba(245, 184, 75, 0.25);
+}
+
+.btn {
+  padding: 8px 16px;
+  background: linear-gradient(180deg, var(--color-raised), #191D24);
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
+  color: var(--color-text);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease-out;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.btn:hover {
+  background: linear-gradient(180deg, #232833, var(--color-raised));
+  border-color: var(--color-muted);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -1px;
+}
+
+.transport .btn {
+  padding: 8px 14px;
+}

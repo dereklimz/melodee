@@ -1,0 +1,13 @@
+Total bars: 164
+Null test (mix vs sum of stems): -25.1 dB
+Note counts per lane:
+  kick: 321
+  clap: 49
+  hats: 278
+  perc: 386
+  bass: 980
+  chords: 1256
+  pad: 17
+  lead: 1211
+  vocal: 851
+  ear-candy: 0

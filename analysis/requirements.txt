@@ -1,0 +1,9 @@
+torch
+torchaudio
+demucs
+basic-pitch
+librosa
+soundfile
+pyloudnorm
+numpy
+scipy
