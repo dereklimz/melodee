@@ -11,7 +11,7 @@ export function Ruler({ totalBars, scale, y, h }: Props) {
     const x = barLeft(scale, bar);
     ticks.push(
       <g key={bar}>
-        <line x1={x} x2={x} y1={y + h} y2={y + h - (major ? 9 : mid ? 6 : 3)} stroke="#fff" strokeOpacity={major ? 0.9 : 0.4} shapeRendering="crispEdges" />
+        <line x1={x} x2={x} y1={y + h} y2={y + h - (major ? 8 : mid ? 5 : 3)} stroke="#fff" strokeOpacity={major ? 0.6 : mid ? 0.28 : 0.14} shapeRendering="crispEdges" />
         {major && (
           <text className="ruler-num" x={x + 3} y={y + h - 12}>
             {bar}

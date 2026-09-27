@@ -16,7 +16,7 @@ export function SectionsRow({ sections, scale, y, h }: Props) {
         const style = SECTION_STYLE[s.type];
         return (
           <g key={i} className="block-g" data-section={s.label} data-start={s.startBar} data-end={s.endBar}>
-            <rect x={x0} y={y} width={w} height={h} rx={9} fill={`url(#sg-${s.type})`} />
+            <rect x={x0} y={y} width={w} height={h} rx={9} fill={`url(#sg-${s.type})`} opacity={0.9} />
             {textFits(s.label, w) && (
               <text className="section-text" x={x0 + 10} y={y + h / 2 + 4} fill={style.text}>
                 {s.label}

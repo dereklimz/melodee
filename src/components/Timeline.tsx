@@ -11,8 +11,8 @@ import { SectionsRow } from './SectionsRow';
 
 const GUTTER = 118;
 const PAD_R = 8;
-const GAP = 8;
-const H = { ruler: 30, sections: 34, energy: 84, chords: 32, lane: 48 };
+const GAP = 10;
+const H = { ruler: 30, sections: 30, energy: 76, chords: 28, lane: 46 };
 const MIN_PPB = 5;
 
 interface Row { key: string; label: string; sub?: string; y: number; h: number; family?: ElementFamily; band: boolean }
@@ -60,8 +60,6 @@ export function Timeline({ data }: { data: Track }) {
 
   const x0 = barLeft(scale, 1);
   const x1 = barRight(scale, totalBars);
-  const eightBar: number[] = [];
-  for (let b = 9; b <= totalBars; b += 8) eightBar.push(b);
 
   return (
     <div ref={wrapRef} className="timeline-scroll">
@@ -69,14 +67,8 @@ export function Timeline({ data }: { data: Track }) {
         <Defs />
 
         {rows.filter((r) => r.band).map((r) => (
-          <rect key={`bg-${r.key}`} x={x0} y={r.y - 2} width={x1 - x0} height={r.h + 4} rx={12} fill="#1C1F5A" opacity={0.55} />
+          <rect key={`bg-${r.key}`} x={x0} y={r.y - 2} width={x1 - x0} height={r.h + 4} rx={12} fill="#1C1F5A" opacity={0.32} />
         ))}
-
-        <g stroke="#B8B5E0" strokeOpacity={0.07} shapeRendering="crispEdges">
-          {eightBar.map((b) => (
-            <line key={b} x1={barLeft(scale, b)} x2={barLeft(scale, b)} y1={bodyTop} y2={svgH - 2} />
-          ))}
-        </g>
 
         <Ruler totalBars={totalBars} scale={scale} y={ruler.y} h={ruler.h} />
         <SectionsRow sections={data.sections} scale={scale} y={sections.y} h={sections.h} />
@@ -95,7 +87,7 @@ export function Timeline({ data }: { data: Track }) {
         ))}
 
         {/* Section boundaries read straight down through every row. */}
-        <g className="mark dim-time" stroke="#B8B5E0" strokeOpacity={0.3} shapeRendering="crispEdges" pointerEvents="none">
+        <g className="mark dim-time" stroke="#B8B5E0" strokeOpacity={0.16} shapeRendering="crispEdges" pointerEvents="none">
           {data.sections.slice(1).map((s) => (
             <line key={s.startBar} x1={barLeft(scale, s.startBar)} x2={barLeft(scale, s.startBar)} y1={bodyTop} y2={svgH - 2} />
           ))}

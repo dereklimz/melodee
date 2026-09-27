@@ -12,8 +12,8 @@ interface LaneProps {
 
 export function ElementLane({ element, family, events = [], scale, y, h }: LaneProps) {
   const hasEvents = events.length > 0;
-  const top = hasEvents ? y + 31 : y + 6;
-  const bot = y + h - (hasEvents ? 4 : 6);
+  const top = hasEvents ? y + 30 : y + 9;
+  const bot = y + h - (hasEvents ? 4 : 9);
   return (
     <g>
       {(element?.blocks ?? []).map((b, i) => (
@@ -76,7 +76,7 @@ function BlockShape({ id, block, family, scale, top, bot, name }: BlockProps) {
       )}
       <g mask={hasFade ? `url(#m-${id})` : undefined}>
         <g className="mark dim-time">
-          <polygon points={toPoints(poly)} fill={grad} stroke={grad} strokeWidth={3} strokeLinejoin="round" fillOpacity={low ? 0.4 : 1} strokeOpacity={low ? 0.4 : 1} />
+          <polygon points={toPoints(poly)} fill={grad} stroke={grad} strokeWidth={3} strokeLinejoin="round" fillOpacity={low ? 0.3 : 0.8} strokeOpacity={low ? 0.3 : 0.8} />
           {low && <polygon points={toPoints(poly)} fill="none" stroke="#fff" strokeOpacity={0.95} strokeWidth={1.4} strokeDasharray="4 3" strokeLinejoin="round" />}
         </g>
         {washes.map((s, i) => (
@@ -84,10 +84,10 @@ function BlockShape({ id, block, family, scale, top, bot, name }: BlockProps) {
         ))}
       </g>
       {edgeLines.map((l, i) => (
-        <line key={`e${i}`} className="mark dim-frequency" x1={l.a[0]} y1={l.a[1]} x2={l.b[0]} y2={l.b[1]} stroke="#fff" strokeWidth={1.6} strokeLinecap="round" opacity={0.9} />
+        <line key={`e${i}`} className="mark dim-frequency" x1={l.a[0]} y1={l.a[1]} x2={l.b[0]} y2={l.b[1]} stroke="#fff" strokeWidth={1.3} strokeLinecap="round" opacity={0.65} />
       ))}
       {fadeRamps.map((l, i) => (
-        <line key={`f${i}`} className="mark dim-volume" x1={l.a[0]} y1={l.a[1]} x2={l.b[0]} y2={l.b[1]} stroke="#fff" strokeWidth={1.2} strokeLinecap="round" opacity={0.55} />
+        <line key={`f${i}`} className="mark dim-volume" x1={l.a[0]} y1={l.a[1]} x2={l.b[0]} y2={l.b[1]} stroke="#fff" strokeWidth={1} strokeLinecap="round" opacity={0.35} />
       ))}
       {tall && (block.movements ?? []).map((m, i) => <MovementCurve key={i} m={m} scale={scale} top={top + 6} bot={bot - 6} />)}
     </g>
@@ -102,12 +102,12 @@ function MovementCurve({ m, scale, top, bot }: { m: Movement; scale: Scale; top:
   const last = pts[pts.length - 1];
   return (
     <g className={`mark dim-${m.dimension}`} data-movement={m.type}>
-      <path d={d} fill="none" stroke="#14164A" strokeOpacity={0.55} strokeWidth={3.6} strokeLinecap="round" strokeLinejoin="round" />
-      <path d={d} fill="none" stroke="#fff" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={dash} />
+      <path d={d} fill="none" stroke="#14164A" strokeOpacity={0.3} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+      <path d={d} fill="none" stroke="#fff" strokeOpacity={0.9} strokeWidth={1.3} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={dash} />
       {m.dimension === 'frequency' && (
         <>
-          <circle cx={first[0]} cy={first[1]} r={2.4} fill="#fff" />
-          <circle cx={last[0]} cy={last[1]} r={2.4} fill="#fff" />
+          <circle cx={first[0]} cy={first[1]} r={2} fill="#fff" />
+          <circle cx={last[0]} cy={last[1]} r={2} fill="#fff" />
         </>
       )}
     </g>
@@ -152,7 +152,7 @@ function FxMarker({ event, scale, top, bot }: { event: FxEvent; scale: Scale; to
   return (
     <g className="block-g mark dim-fx" data-fx={event.type} data-start={s} data-end={e}>
       <title>{`${label} · bars ${s}–${e}`}</title>
-      <polygon points={toPoints(pts)} fill="url(#g-fx)" stroke="url(#g-fx)" strokeWidth={2} strokeLinejoin="round" fillOpacity={ghost ? 0.4 : 1} />
+      <polygon points={toPoints(pts)} fill="url(#g-fx)" stroke="url(#g-fx)" strokeWidth={2} strokeLinejoin="round" fillOpacity={ghost ? 0.3 : 0.8} strokeOpacity={ghost ? 0.3 : 0.8} />
       {ghost && <polygon points={toPoints(pts)} fill="none" stroke="#fff" strokeWidth={1.2} strokeDasharray="3 2" strokeLinejoin="round" />}
     </g>
   );

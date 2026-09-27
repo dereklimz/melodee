@@ -22,8 +22,8 @@ export function Defs() {
         <stop offset="1" stopColor="#6A5AF9" />
       </linearGradient>
       <linearGradient id="energy-fill" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#F0509A" stopOpacity="0.55" />
-        <stop offset="1" stopColor="#7B2FF7" stopOpacity="0.04" />
+        <stop offset="0" stopColor="#F0509A" stopOpacity="0.28" />
+        <stop offset="1" stopColor="#7B2FF7" stopOpacity="0.02" />
       </linearGradient>
       <filter id="f-blur" x="-30%" y="-30%" width="160%" height="160%">
         <feGaussianBlur stdDeviation="3" />

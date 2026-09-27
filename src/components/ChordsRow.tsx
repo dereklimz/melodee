@@ -27,10 +27,10 @@ export function ChordsRow({ harmony, scale, y, h }: Props) {
         return (
           <g key={si} className="block-g" data-mode={seg.mode} data-start={seg.startBar} data-end={seg.endBar}>
             <title>{root ? `${cells[0].symbol} held · bars ${seg.startBar}–${seg.endBar}` : `${summary} · bars ${seg.startBar}–${seg.endBar}`}</title>
-            <rect x={x0} y={y} width={w} height={h} rx={8} fill={root ? '#3A3790' : 'url(#g-chords)'} stroke={root ? 'rgba(184,181,224,0.35)' : 'none'} />
+            <rect x={x0} y={y} width={w} height={h} rx={8} fill={root ? '#3A3790' : 'url(#g-chords)'} opacity={root ? 0.8 : 0.72} stroke={root ? 'rgba(184,181,224,0.22)' : 'none'} />
             {!root &&
               cells.slice(1).map((c) => (
-                <line key={c.startBar} x1={barLeft(scale, c.startBar)} x2={barLeft(scale, c.startBar)} y1={y + 6} y2={y + h - 6} stroke="#14164A" strokeOpacity={0.4} shapeRendering="crispEdges" />
+                <line key={c.startBar} x1={barLeft(scale, c.startBar)} x2={barLeft(scale, c.startBar)} y1={y + 6} y2={y + h - 6} stroke="#14164A" strokeOpacity={0.3} shapeRendering="crispEdges" />
               ))}
             {root && fits(cells[0].symbol, w) && (
               <text className="chord-text" x={x0 + w / 2} y={y + h / 2 + 4} textAnchor="middle">{cells[0].symbol}</text>

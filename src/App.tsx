@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Legend } from './components/Legend';
 import { Sidebar } from './components/Sidebar';
 import { Timeline } from './components/Timeline';
 import { TrackHero } from './components/TrackHero';
@@ -46,7 +45,6 @@ export default function App() {
             <TrackHero track={current.track} />
             <section className="timeline-card" aria-label="Teardown timeline">
               <Timeline key={current.track.id} data={current} />
-              <Legend />
             </section>
           </>
         )}

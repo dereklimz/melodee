@@ -13,12 +13,12 @@ export function EnergyRow({ energy, totalBars, scale, y, h }: Props) {
   const x1 = barRight(scale, totalBars);
   return (
     <g className="mark dim-volume">
-      {[0.25, 0.5, 0.75, 1].map((lvl) => {
+      {[0.5].map((lvl) => {
         const gy = yBottom - lvl * (yBottom - yTop);
-        return <line key={lvl} x1={x0} x2={x1} y1={gy} y2={gy} stroke="#B8B5E0" strokeOpacity={0.12} strokeDasharray="2 4" shapeRendering="crispEdges" />;
+        return <line key={lvl} x1={x0} x2={x1} y1={gy} y2={gy} stroke="#B8B5E0" strokeOpacity={0.1} strokeDasharray="2 4" shapeRendering="crispEdges" />;
       })}
       <path d={area} fill="url(#energy-fill)" />
-      <path d={line} fill="none" stroke="#FF7EC3" strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />
+      <path d={line} fill="none" stroke="#FF9AD0" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
     </g>
   );
 }
