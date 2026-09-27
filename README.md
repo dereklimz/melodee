@@ -1,32 +1,28 @@
-# React + TypeScript + Vite
+# Melodee — Track Teardown (UI demo)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A clickable demo that turns a reference track into the arrangement "whiteboard" teardown: sections, energy,
+chords, and one lane per element, with filter sweeps, volume and spatial movement drawn inside each lane.
+All analysis is hand-authored mock JSON; there is no audio analysis and no backend.
 
-Currently, two official plugins are available:
+## Run
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install --legacy-peer-deps
+npm run dev      # http://localhost:5173, add #demo-02 / #demo-03 to open another track
+npx vitest run   # geometry, validator, and every mock track checked against the data model
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Data
+
+Each track is one JSON file in `public/tracks/`, listed in `public/tracks/index.json`. Positions are bars,
+1-indexed, `endBar` inclusive. Swap a file or add an id to the index and the view changes with no code change.
+Types live in `src/types/track.ts`; `src/lib/validate.ts` rejects malformed files with the path of the bad field.
+`harmony.barsPerChord` is an optional addition to the spec's data model (default 2).
+
+## Status
+
+Phase 1 of 3: mock data and the timeline renderer. Library click-to-load is in as a review aid.
+Next: Phase 2 (drag and drop, analyzing state, fake-door modal), Phase 3 (playback, tooltips, dimension filter, zoom).
+Design reference: `design/reference.png`.
+
+The previous demo (real Demucs / DrumSep / Basic Pitch pipeline) is saved at the `v1-real-pipeline` tag.

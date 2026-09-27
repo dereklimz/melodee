@@ -1,0 +1,121 @@
+{
+  "track": {
+    "id": "demo-03",
+    "title": "Static Bloom",
+    "artist": "Juno Arca",
+    "bpm": 128,
+    "key": "D minor",
+    "totalBars": 128,
+    "firstDownbeatSec": 0.5
+  },
+  "sections": [
+    { "type": "intro", "label": "Intro", "startBar": 1, "endBar": 8 },
+    { "type": "break", "label": "Break", "startBar": 9, "endBar": 24 },
+    { "type": "drop", "label": "Drop", "startBar": 25, "endBar": 48 },
+    { "type": "post_drop", "label": "Post drop", "startBar": 49, "endBar": 64 },
+    { "type": "break", "label": "Break", "startBar": 65, "endBar": 72 },
+    { "type": "build", "label": "Build", "startBar": 73, "endBar": 80 },
+    { "type": "drop", "label": "Drop", "startBar": 81, "endBar": 104 },
+    { "type": "post_drop", "label": "Post drop", "startBar": 105, "endBar": 120 },
+    { "type": "outro", "label": "Outro", "startBar": 121, "endBar": 128 }
+  ],
+  "energy": [
+    { "startBar": 1, "endBar": 8, "level": 0.2, "shape": "flat" },
+    { "startBar": 9, "endBar": 24, "level": 0.35, "shape": "ramp_up" },
+    { "startBar": 25, "endBar": 48, "level": 0.8, "shape": "flat" },
+    { "startBar": 49, "endBar": 64, "level": 0.9, "shape": "flat" },
+    { "startBar": 65, "endBar": 72, "level": 0.3, "shape": "flat" },
+    { "startBar": 73, "endBar": 80, "level": 0.6, "shape": "ramp_up" },
+    { "startBar": 81, "endBar": 104, "level": 0.95, "shape": "flat" },
+    { "startBar": 105, "endBar": 120, "level": 1.0, "shape": "flat" },
+    { "startBar": 121, "endBar": 128, "level": 0.25, "shape": "ramp_down" }
+  ],
+  "harmony": {
+    "progression": ["Dm", "Bb", "F", "C"],
+    "segments": [
+      { "mode": "root", "startBar": 1, "endBar": 8 },
+      { "mode": "progression", "startBar": 9, "endBar": 24 },
+      { "mode": "root", "startBar": 25, "endBar": 32 },
+      { "mode": "progression", "startBar": 33, "endBar": 64 },
+      { "mode": "root", "startBar": 65, "endBar": 80 },
+      { "mode": "progression", "startBar": 81, "endBar": 120 },
+      { "mode": "root", "startBar": 121, "endBar": 128 }
+    ]
+  },
+  "elements": [
+    {
+      "id": "kick", "name": "Kick", "family": "kick",
+      "blocks": [
+        { "startBar": 1, "endBar": 8, "confidence": 0.9, "entry": { "type": "cut" }, "exit": { "type": "cut" },
+          "movements": [{ "dimension": "frequency", "type": "highpass_open", "startBar": 1, "endBar": 8 }] },
+        { "startBar": 25, "endBar": 64, "confidence": 0.95, "entry": { "type": "cut" }, "exit": { "type": "cut" } },
+        { "startBar": 81, "endBar": 120, "confidence": 0.94, "entry": { "type": "cut" }, "exit": { "type": "fade", "bars": 4 } }
+      ]
+    },
+    {
+      "id": "drums", "name": "Top drums", "family": "drums",
+      "blocks": [
+        { "startBar": 1, "endBar": 8, "confidence": 0.85, "entry": { "type": "cut" }, "exit": { "type": "cut" } },
+        { "startBar": 9, "endBar": 24, "confidence": 0.75, "entry": { "type": "fade", "bars": 4 }, "exit": { "type": "fade", "bars": 2 },
+          "movements": [{ "dimension": "spatial", "type": "delay_throw", "startBar": 23, "endBar": 24 }] },
+        { "startBar": 25, "endBar": 64, "confidence": 0.93, "entry": { "type": "cut" }, "exit": { "type": "cut" } },
+        { "startBar": 73, "endBar": 80, "confidence": 0.8, "entry": { "type": "cut" }, "exit": { "type": "cut" },
+          "movements": [{ "dimension": "volume", "type": "fade_up", "startBar": 73, "endBar": 80 }] },
+        { "startBar": 81, "endBar": 120, "confidence": 0.93, "entry": { "type": "cut" }, "exit": { "type": "fade", "bars": 4 } }
+      ]
+    },
+    {
+      "id": "bass", "name": "Bass", "family": "bass",
+      "blocks": [
+        { "startBar": 9, "endBar": 24, "confidence": 0.85, "entry": { "type": "highpass_sweep", "bars": 8 }, "exit": { "type": "lowpass_sweep", "bars": 2 },
+          "movements": [{ "dimension": "frequency", "type": "lowpass_open", "startBar": 13, "endBar": 24 }] },
+        { "startBar": 25, "endBar": 64, "confidence": 0.9, "entry": { "type": "cut" }, "exit": { "type": "cut" } },
+        { "startBar": 81, "endBar": 120, "confidence": 0.55, "entry": { "type": "cut" }, "exit": { "type": "cut" } }
+      ]
+    },
+    {
+      "id": "synth", "name": "Synths", "family": "synth",
+      "blocks": [
+        { "startBar": 1, "endBar": 24, "confidence": 0.85, "entry": { "type": "fade", "bars": 4 }, "exit": { "type": "reverb_wash", "bars": 2 },
+          "movements": [
+            { "dimension": "frequency", "type": "lowpass_open", "startBar": 1, "endBar": 24 },
+            { "dimension": "spatial", "type": "reverb_up", "startBar": 21, "endBar": 24 }
+          ] },
+        { "startBar": 25, "endBar": 64, "confidence": 0.9, "entry": { "type": "cut" }, "exit": { "type": "cut" } },
+        { "startBar": 65, "endBar": 80, "confidence": 0.75, "entry": { "type": "reverb_wash", "bars": 2 }, "exit": { "type": "cut" },
+          "movements": [
+            { "dimension": "spatial", "type": "reverb_up", "startBar": 65, "endBar": 72 },
+            { "dimension": "frequency", "type": "lowpass_open", "startBar": 73, "endBar": 80 }
+          ] },
+        { "startBar": 81, "endBar": 120, "confidence": 0.88, "entry": { "type": "cut" }, "exit": { "type": "fade", "bars": 4 } }
+      ]
+    },
+    {
+      "id": "vocal", "name": "Vocals", "family": "vocal",
+      "blocks": [
+        { "startBar": 9, "endBar": 24, "confidence": 0.82, "entry": { "type": "fade", "bars": 2 }, "exit": { "type": "reverb_wash", "bars": 2 },
+          "movements": [{ "dimension": "spatial", "type": "reverb_up", "startBar": 21, "endBar": 24 }] },
+        { "startBar": 25, "endBar": 32, "confidence": 0.9, "entry": { "type": "cut" }, "exit": { "type": "cut" } },
+        { "startBar": 81, "endBar": 88, "confidence": 0.55, "entry": { "type": "cut" }, "exit": { "type": "cut" } },
+        { "startBar": 105, "endBar": 112, "confidence": 0.85, "entry": { "type": "cut" }, "exit": { "type": "cut" } }
+      ]
+    },
+    {
+      "id": "fx", "name": "FX", "family": "fx",
+      "blocks": [
+        { "startBar": 121, "endBar": 128, "confidence": 0.7, "entry": { "type": "fade", "bars": 2 }, "exit": { "type": "fade", "bars": 4 } }
+      ]
+    }
+  ],
+  "fxEvents": [
+    { "type": "riser", "startBar": 17, "endBar": 24 },
+    { "type": "crash", "bar": 25 },
+    { "type": "impact", "bar": 25 },
+    { "type": "downlifter", "startBar": 65, "endBar": 66 },
+    { "type": "riser", "startBar": 73, "endBar": 80 },
+    { "type": "reverse_cymbal", "startBar": 79, "endBar": 80 },
+    { "type": "crash", "bar": 81 },
+    { "type": "impact", "bar": 81 },
+    { "type": "crash", "bar": 105 }
+  ]
+}

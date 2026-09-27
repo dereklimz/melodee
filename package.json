@@ -11,13 +11,9 @@
   },
   "dependencies": {
     "@testing-library/react": "^16.3.3",
-    "@tonejs/midi": "^2.0.28",
     "happy-dom": "^20.14.5",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "tone": "^15.1.22",
-    "vitest": "^4.1.11",
-    "zustand": "^5.0.15"
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",
@@ -26,6 +22,7 @@
     "@vitejs/plugin-react": "^4.7.0",
     "oxlint": "^1.81.0",
     "typescript": "~6.0.2",
-    "vite": "^4.5.14"
+    "vite": "^4.5.14",
+    "vitest": "^0.34.6"
   }
 }
