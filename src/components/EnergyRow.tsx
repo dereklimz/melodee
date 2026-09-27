@@ -17,8 +17,8 @@ export function EnergyRow({ energy, totalBars, scale, y, h }: Props) {
         const gy = yBottom - lvl * (yBottom - yTop);
         return <line key={lvl} x1={x0} x2={x1} y1={gy} y2={gy} stroke="#B8B5E0" strokeOpacity={0.1} strokeDasharray="2 4" shapeRendering="crispEdges" />;
       })}
-      <path d={area} fill="url(#energy-fill)" />
-      <path d={line} fill="none" stroke="#FF9AD0" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
+      <path d={area} fill="#F0509A" opacity={0.22} />
+      <path d={line} fill="none" stroke="#FF7EC3" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
     </g>
   );
 }

@@ -4,7 +4,9 @@ import { drumVoices, expandNotes } from './patterns';
 
 export const BASE_OCTAVE: Partial<Record<ElementFamily, number>> = { bass: 2, synth: 4, vocal: 4 };
 export const CHORD_OCTAVE = 3;
-export const STRIP_H = 14;
+export const STRIP_H = 22;
+/** Height of the clip name strip above the notes. */
+export const HEAD_H = 12;
 
 export type LaneKind = 'hits' | 'notes' | 'fx' | 'blocks';
 
@@ -21,13 +23,13 @@ export interface LaneMetrics {
   pitchMax: number;
 }
 
-const NOTES_H: Partial<Record<ElementFamily, number>> = { bass: 54, synth: 76, vocal: 46 };
+const NOTES_H: Partial<Record<ElementFamily, number>> = { bass: 60, synth: 82, vocal: 52 };
 
 export function laneMetrics(track: Track, family: ElementFamily): LaneMetrics {
   const el = track.elements.find((e) => e.family === family);
   const strip = !!el?.blocks.some((b) => (b.movements?.length ?? 0) > 0);
   const base = { family, strip, voices: [] as string[], pitchMin: 0, pitchMax: 0 };
-  const total = (notesH: number) => 6 + notesH + (strip ? STRIP_H + 6 : 0) + 6;
+  const total = (notesH: number) => HEAD_H + 2 + notesH + 2 + (strip ? STRIP_H + 4 : 0) + 2;
 
   if (family === 'fx') return { ...base, kind: 'fx', notesH: 34, h: 46, strip: false };
   if (!el) return { ...base, kind: 'blocks', notesH: 20, h: total(20) };

@@ -2,27 +2,28 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { barLeft, barRight, type Scale } from '../lib/geometry';
 import { chordPitchRange, laneMetrics, type LaneMetrics } from '../lib/layout';
 import { midiName } from '../lib/chords';
-import { FAMILY_LABEL, FAMILY_ORDER } from '../lib/theme';
+import { DAW, FAMILY_FLAT, FAMILY_LABEL, FAMILY_ORDER } from '../lib/theme';
 import type { ElementFamily, Track } from '../types/track';
 import { ChordsRow } from './ChordsRow';
-import { Defs } from './Defs';
 import { ElementLane } from './ElementLane';
 import { EnergyRow } from './EnergyRow';
+import { Overview } from './Overview';
 import { Ruler } from './Ruler';
 import { SectionsRow } from './SectionsRow';
 
-const LABEL_W = 150;
-const PAD_L = 6;
-const PAD_R = 14;
-const GAP = 8;
-const H = { ruler: 40, sections: 28, energy: 64, chords: 62 };
-const ZOOMS = [1, 1.5, 2, 3, 4, 6, 8];
+const LABEL_W = 156;
+const PAD_L = 0;
+const PAD_R = 0;
+const GAP = 2;
+const H = { ruler: 40, sections: 26, energy: 64, chords: 64 };
+const ZOOMS = [1, 1.5, 2, 3, 4, 6, 8, 12, 16];
 
-interface Row { key: string; label: string; sub?: string; y: number; h: number; family?: ElementFamily; band: boolean; metrics?: LaneMetrics }
+interface Row { key: string; label: string; sub?: string; y: number; h: number; family?: ElementFamily; band: boolean; metrics?: LaneMetrics; tile: string; dark: boolean }
 
 export function Timeline({ data }: { data: Track }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(900);
+  const [scrollLeft, setScrollLeft] = useState(0);
   const [zoomIdx, setZoomIdx] = useState(0);
 
   useEffect(() => {
@@ -48,31 +49,41 @@ export function Timeline({ data }: { data: Track }) {
   const chordRange = useMemo(() => chordPitchRange(data), [data]);
 
   let cursor = 0;
-  const place = (h: number) => {
+  const place = (h: number, gap = GAP) => {
     const y = cursor;
-    cursor += h + GAP;
+    cursor += h + gap;
     return y;
   };
-  const ruler = { y: place(H.ruler), h: H.ruler };
-  const sections = { y: place(H.sections), h: H.sections };
+  const ruler = { y: place(H.ruler, 4), h: H.ruler };
+  const sections = { y: place(H.sections, 6), h: H.sections };
   const energy = { y: place(H.energy), h: H.energy };
   const chords = { y: place(H.chords), h: H.chords };
   const laneRows = lanes.map((m) => ({ m, y: place(m.h) }));
-  const svgH = cursor - GAP + 4;
+  const svgH = cursor - GAP;
 
   const rows: Row[] = [
-    { key: 'tempo', label: 'Tempo', sub: `${bpm} BPM · 4/4`, y: ruler.y, h: ruler.h, band: false },
-    { key: 'sections', label: 'Sections', y: sections.y, h: sections.h, band: false },
-    { key: 'energy', label: 'Energy', sub: 'high → low', y: energy.y, h: energy.h, band: true },
-    { key: 'chords', label: 'Chords', sub: `${midiName(chordRange.min)}–${midiName(chordRange.max)}`, y: chords.y, h: chords.h, band: true },
-    ...laneRows.map(({ m, y }) => ({ key: m.family, label: FAMILY_LABEL[m.family], y, h: m.h, family: m.family, band: true, metrics: m })),
+    { key: 'tempo', label: 'Tempo', sub: `${bpm} BPM · 4/4`, y: ruler.y, h: ruler.h, band: false, tile: DAW.tile, dark: false },
+    { key: 'sections', label: 'Sections', y: sections.y, h: sections.h, band: false, tile: DAW.tile, dark: false },
+    { key: 'energy', label: 'Energy', sub: 'high → low', y: energy.y, h: energy.h, band: true, tile: DAW.tile, dark: false },
+    { key: 'chords', label: 'Chords', sub: `${midiName(chordRange.min)}–${midiName(chordRange.max)}`, y: chords.y, h: chords.h, band: true, tile: DAW.chordProg, dark: true },
+    ...laneRows.map(({ m, y }) => ({ key: m.family, label: FAMILY_LABEL[m.family], y, h: m.h, family: m.family, band: true, metrics: m, tile: FAMILY_FLAT[m.family], dark: true })),
   ];
 
-  const x0 = barLeft(scale, 1);
-  const x1 = barRight(scale, totalBars);
-  const barGrid = ppb >= 24;
-  const gridBars: number[] = [];
-  if (barGrid) for (let b = 2; b <= totalBars; b++) gridBars.push(b);
+  // Bar grid: a line every `step` bars, stronger every 4 steps, laid under and over the clips.
+  const step = [1, 2, 4, 8].find((s) => s * ppb >= 14) ?? 8;
+  const gridUnder: string[] = [];
+  const gridOver: string[] = [];
+  for (let b = 1 + step; b <= totalBars; b += step) {
+    const strong = (b - 1) % (step * 4) === 0;
+    (strong ? gridOver : gridUnder).push(`M${barLeft(scale, b).toFixed(1)},${energy.y}V${svgH}`);
+  }
+  const strongBars = gridOver.join('');
+  const weakBars = gridUnder.join('');
+
+  const scrollTo = (left: number) => {
+    const el = scrollRef.current;
+    if (el) el.scrollLeft = Math.max(0, Math.min(left, contentW - el.clientWidth));
+  };
 
   return (
     <div>
@@ -85,68 +96,70 @@ export function Timeline({ data }: { data: Track }) {
         </div>
       </div>
 
-      <div className="timeline-grid" style={{ gridTemplateColumns: `${LABEL_W}px minmax(0, 1fr)` }}>
-        <svg className="timeline-svg" width={LABEL_W} height={svgH} aria-hidden="true">
-          <Defs />
-          {rows.map((r) => (
-            <g key={`label-${r.key}`}>
-              {r.family && <circle cx={10} cy={r.y + r.h / 2} r={5} fill={`url(#g-${r.family})`} />}
-              <text className="lane-label" x={r.family ? 24 : 6} y={r.y + r.h / 2 + (r.sub ? -1 : 4)}>{r.label}</text>
-              {r.sub && <text className="lane-sub" x={r.family ? 24 : 6} y={r.y + r.h / 2 + 12}>{r.sub}</text>}
-              {r.metrics?.kind === 'hits' && r.metrics.voices.length > 1 &&
-                r.metrics.voices.map((v, i) => (
-                  <text key={v} className="voice-label" x={LABEL_W - 6} textAnchor="end" y={r.y + 6 + (i + 0.5) * ((r.metrics!.notesH) / r.metrics!.voices.length) + 3}>{v}</text>
-                ))}
-              {r.metrics?.kind === 'notes' && (
-                <>
-                  <text className="voice-label" x={LABEL_W - 6} textAnchor="end" y={r.y + 6 + 8}>{midiName(r.metrics.pitchMax)}</text>
-                  <text className="voice-label" x={LABEL_W - 6} textAnchor="end" y={r.y + 6 + r.metrics.notesH - 2}>{midiName(r.metrics.pitchMin)}</text>
-                </>
-              )}
-            </g>
-          ))}
-        </svg>
-
-        <div ref={scrollRef} className="timeline-scroll">
-          <svg className="timeline-svg" width={contentW} height={svgH} viewBox={`0 0 ${contentW} ${svgH}`} role="img" aria-label={`Teardown of ${data.track.title}: tempo, sections, energy, chords with notes, and ${lanes.length} element lanes across ${totalBars} bars`}>
-            <Defs />
-
-            {rows.filter((r) => r.band).map((r) => (
-              <rect key={`bg-${r.key}`} x={x0} y={r.y - 2} width={x1 - x0} height={r.h + 4} rx={12} fill="#1C1F5A" opacity={0.32} />
-            ))}
-
-            {barGrid && (
-              <g stroke="#B8B5E0" strokeOpacity={0.06} shapeRendering="crispEdges" pointerEvents="none">
-                {gridBars.map((b) => <line key={b} x1={barLeft(scale, b)} x2={barLeft(scale, b)} y1={energy.y} y2={svgH - 2} />)}
-              </g>
-            )}
-
-            <Ruler track={data.track} scale={scale} y={ruler.y} h={ruler.h} />
-            <SectionsRow sections={data.sections} scale={scale} y={sections.y} h={sections.h} />
-            <EnergyRow energy={data.energy} totalBars={totalBars} scale={scale} y={energy.y} h={energy.h} />
-            <ChordsRow harmony={data.harmony} pitchRange={chordRange} scale={scale} y={chords.y} h={chords.h} />
-            {laneRows.map(({ m, y }) => (
-              <ElementLane
-                key={m.family}
-                family={m.family}
-                metrics={m}
-                harmony={data.harmony}
-                totalBars={totalBars}
-                element={data.elements.find((e) => e.family === m.family)}
-                events={m.family === 'fx' ? data.fxEvents : []}
-                scale={scale}
-                y={y}
-              />
-            ))}
-
-            {/* Section boundaries read straight down through every row. */}
-            <g className="mark dim-time" stroke="#B8B5E0" strokeOpacity={0.16} shapeRendering="crispEdges" pointerEvents="none">
-              {data.sections.slice(1).map((s) => (
-                <line key={s.startBar} x1={barLeft(scale, s.startBar)} x2={barLeft(scale, s.startBar)} y1={sections.y} y2={svgH - 2} />
+      <div className="timeline-grid" style={{ gridTemplateColumns: `minmax(0, 1fr) ${LABEL_W}px` }}>
+        <div className="timeline-main">
+          <Overview data={data} width={width} scrollLeft={scrollLeft} contentW={contentW} viewW={width} onScrollTo={scrollTo} />
+          <div ref={scrollRef} className="timeline-scroll" onScroll={(e) => setScrollLeft(e.currentTarget.scrollLeft)}>
+            <svg className="timeline-svg" width={contentW} height={svgH} viewBox={`0 0 ${contentW} ${svgH}`} role="img" aria-label={`Teardown of ${data.track.title}: tempo, sections, energy, chords with notes, and ${lanes.length} element lanes across ${totalBars} bars`}>
+              {rows.filter((r) => r.band).map((r) => (
+                <rect key={`bg-${r.key}`} x={0} y={r.y} width={contentW} height={r.h} fill={DAW.lane} />
               ))}
-            </g>
-          </svg>
+              <path d={weakBars} stroke="#fff" strokeOpacity={0.05} shapeRendering="crispEdges" pointerEvents="none" fill="none" />
+
+              <Ruler track={data.track} scale={scale} y={ruler.y} h={ruler.h} />
+              <SectionsRow sections={data.sections} scale={scale} y={sections.y} h={sections.h} />
+              <EnergyRow energy={data.energy} totalBars={totalBars} scale={scale} y={energy.y} h={energy.h} />
+              <ChordsRow harmony={data.harmony} pitchRange={chordRange} scale={scale} y={chords.y} h={chords.h} />
+              {laneRows.map(({ m, y }) => (
+                <ElementLane
+                  key={m.family}
+                  family={m.family}
+                  metrics={m}
+                  harmony={data.harmony}
+                  totalBars={totalBars}
+                  element={data.elements.find((e) => e.family === m.family)}
+                  events={m.family === 'fx' ? data.fxEvents : []}
+                  scale={scale}
+                  y={y}
+                />
+              ))}
+
+              <path d={strongBars} stroke="#000" strokeOpacity={0.22} shapeRendering="crispEdges" pointerEvents="none" fill="none" />
+              {/* Section boundaries read straight down through every row. */}
+              <g className="mark dim-time" stroke="#fff" strokeOpacity={0.4} shapeRendering="crispEdges" pointerEvents="none">
+                {data.sections.slice(1).map((s) => (
+                  <line key={s.startBar} x1={barLeft(scale, s.startBar)} x2={barLeft(scale, s.startBar)} y1={sections.y} y2={svgH} />
+                ))}
+              </g>
+              <line x1={barRight(scale, totalBars)} x2={barRight(scale, totalBars)} y1={sections.y} y2={svgH} stroke="#fff" strokeOpacity={0.4} shapeRendering="crispEdges" />
+            </svg>
+          </div>
         </div>
+
+        {/* Track headers sit on the right, like the arrangement view, and stay put while the timeline scrolls. */}
+        <svg className="timeline-svg tile-col" width={LABEL_W} height={svgH} aria-hidden="true" style={{ marginTop: data.elements.length * 4 + 6 + 6 }}>
+          {rows.map((r) => {
+            const fg = r.dark ? DAW.note : '#fff';
+            const sub = r.dark ? 'rgba(20,22,74,0.72)' : 'rgba(255,255,255,0.7)';
+            return (
+              <g key={`tile-${r.key}`}>
+                <rect x={0} y={r.y} width={LABEL_W} height={r.h} fill={r.tile} />
+                <text className="tile-name" x={8} y={r.y + 16} fill={fg}>{r.label}</text>
+                {r.sub && <text className="tile-sub" x={8} y={r.y + 29} fill={sub}>{r.sub}</text>}
+                {r.metrics?.kind === 'hits' && r.metrics.voices.length > 1 &&
+                  r.metrics.voices.map((v, i) => (
+                    <text key={v} className="tile-voice" x={LABEL_W - 8} textAnchor="end" y={r.y + 14 + (i + 0.5) * (r.metrics!.notesH / r.metrics!.voices.length) + 3} fill={sub}>{v}</text>
+                  ))}
+                {r.metrics?.kind === 'notes' && (
+                  <>
+                    <text className="tile-voice" x={LABEL_W - 8} textAnchor="end" y={r.y + 25} fill={sub}>{midiName(r.metrics.pitchMax)}</text>
+                    <text className="tile-voice" x={LABEL_W - 8} textAnchor="end" y={r.y + 14 + r.metrics.notesH} fill={sub}>{midiName(r.metrics.pitchMin)}</text>
+                  </>
+                )}
+              </g>
+            );
+          })}
+        </svg>
       </div>
     </div>
   );

@@ -51,3 +51,32 @@ export function drumVoices(el: Element): string[] {
   for (const p of Object.values(el.patterns ?? {})) if (p.kind === 'hits') for (const v of Object.keys(p.voices)) if (!seen.includes(v)) seen.push(v);
   return seen;
 }
+
+export interface PitchShift { from: number; to: number; p1: number; p2: number }
+
+/**
+ * Connectors between consecutive notes (or chord stacks) wherever the pitch changes, so
+ * melodic movement can be read as a contour. Stacks are matched voice to voice from the
+ * bottom; gaps longer than half a bar are treated as rests and left unconnected.
+ */
+export function pitchShifts(events: NoteEvent[]): PitchShift[] {
+  const groups = new Map<number, NoteEvent[]>();
+  for (const e of events) {
+    const k = Math.round(e.pos * 1e6);
+    groups.set(k, [...(groups.get(k) ?? []), e]);
+  }
+  const ordered = [...groups.entries()].sort((a, b) => a[0] - b[0]).map(([, g]) => g.sort((a, b) => a.pitch - b.pitch));
+  const out: PitchShift[] = [];
+  for (let i = 1; i < ordered.length; i++) {
+    const a = ordered[i - 1];
+    const b = ordered[i];
+    for (let v = 0; v < Math.min(a.length, b.length); v++) {
+      if (a[v].pitch === b[v].pitch) continue;
+      const to = b[v].pos;
+      const from = Math.min(a[v].pos + a[v].len, to);
+      if (to - from > 0.5) continue;
+      out.push({ from, to, p1: a[v].pitch, p2: b[v].pitch });
+    }
+  }
+  return out;
+}

@@ -79,3 +79,24 @@ describe('expandNotes', () => {
     expect(notes[0].len).toBe(1);
   });
 });
+
+import { pitchShifts } from './patterns';
+
+describe('pitchShifts', () => {
+  it('connects notes only where the pitch changes', () => {
+    const s = pitchShifts([
+      { pos: 0, len: 0.25, pitch: 45 },
+      { pos: 0.25, len: 0.25, pitch: 45 },
+      { pos: 0.5, len: 0.25, pitch: 48 },
+    ]);
+    expect(s).toEqual([{ from: 0.5, to: 0.5, p1: 45, p2: 48 }]);
+  });
+  it('matches chord stacks voice to voice', () => {
+    const stack = (pos: number, root: number) => [0, 3, 7].map((i) => ({ pos, len: 1, pitch: root + i }));
+    const s = pitchShifts([...stack(0, 45), ...stack(1, 41)]);
+    expect(s.map((x) => [x.p1, x.p2])).toEqual([[45, 41], [48, 44], [52, 48]]);
+  });
+  it('leaves rests unconnected', () => {
+    expect(pitchShifts([{ pos: 0, len: 0.1, pitch: 40 }, { pos: 3, len: 0.1, pitch: 50 }])).toEqual([]);
+  });
+});
