@@ -11,6 +11,8 @@ import {
   type Track,
 } from '../types/track';
 
+const CHORD_TONES = ['r', '3', '5', '7', '8'];
+
 const DIMENSION_OF: Record<MovementType, MovementDimension> = {
   fade_up: 'volume',
   fade_down: 'volume',
@@ -125,6 +127,35 @@ export function validateTrack(raw: unknown): string[] {
       else ids.add(el.id);
       if (typeof el.name !== 'string') err(`${p}.name`, 'expected a string');
       oneOf(`${p}.family`, el.family, ELEMENT_FAMILIES);
+      const wantKind = el.family === 'kick' || el.family === 'drums' ? 'hits' : 'notes';
+      const patterns = isObj(el.patterns) ? el.patterns : {};
+      if (el.patterns !== undefined && !isObj(el.patterns)) err(`${p}.patterns`, 'expected an object');
+      for (const [pid, pat] of Object.entries(patterns)) {
+        const pp = `${p}.patterns.${pid}`;
+        if (!isObj(pat)) { err(pp, 'expected an object'); continue; }
+        if (pat.kind !== 'hits' && pat.kind !== 'notes') { err(`${pp}.kind`, 'expected hits | notes'); continue; }
+        if (el.family === 'fx') err(pp, 'fx elements do not take patterns');
+        else if (pat.kind !== wantKind) err(pp, `a ${String(el.family)} element takes ${wantKind} patterns`);
+        const len = pat.lengthBars === undefined ? 1 : pat.lengthBars;
+        if (typeof len !== 'number' || len < 1 || !Number.isInteger(len)) err(`${pp}.lengthBars`, 'expected a whole number of bars');
+        const maxStep = (typeof len === 'number' ? len : 1) * 16;
+        if (pat.kind === 'hits') {
+          if (!isObj(pat.voices) || Object.keys(pat.voices).length === 0) err(`${pp}.voices`, 'expected at least one voice');
+          else
+            for (const [v, steps] of Object.entries(pat.voices)) {
+              if (!Array.isArray(steps) || steps.some((n) => !Number.isInteger(n) || n < 0 || n >= maxStep)) err(`${pp}.voices.${v}`, `steps must be whole numbers 0-${maxStep - 1}`);
+            }
+        } else if (!Array.isArray(pat.notes) || pat.notes.length === 0) err(`${pp}.notes`, 'expected at least one note');
+        else
+          pat.notes.forEach((n, k) => {
+            const np = `${pp}.notes[${k}]`;
+            if (!isObj(n)) return err(np, 'expected an object');
+            if (!Number.isInteger(n.step) || (n.step as number) < 0 || (n.step as number) >= maxStep) err(`${np}.step`, `expected a whole number 0-${maxStep - 1}`);
+            if (typeof n.len !== 'number' || n.len <= 0) err(`${np}.len`, 'expected a positive length in steps');
+            const tones = Array.isArray(n.tone) ? n.tone : [n.tone];
+            if (tones.length === 0 || tones.some((t) => !CHORD_TONES.includes(t as never))) err(`${np}.tone`, `expected ${CHORD_TONES.join(' | ')} or a list of them`);
+          });
+      }
       if (!Array.isArray(el.blocks)) return err(`${p}.blocks`, 'expected an array');
       el.blocks.forEach((b, j) => {
         const bp = `${p}.blocks[${j}]`;
@@ -133,6 +164,16 @@ export function validateTrack(raw: unknown): string[] {
         if (num(`${bp}.confidence`, b.confidence) && (b.confidence < 0 || b.confidence > 1)) err(`${bp}.confidence`, 'must be between 0 and 1');
         edge(`${bp}.entry`, b.entry);
         edge(`${bp}.exit`, b.exit);
+        if (b.pattern !== undefined && (typeof b.pattern !== 'string' || !(b.pattern in patterns))) err(`${bp}.pattern`, `unknown pattern ${JSON.stringify(b.pattern)}`);
+        if (b.overrides !== undefined) {
+          if (!Array.isArray(b.overrides)) return err(`${bp}.overrides`, 'expected an array');
+          b.overrides.forEach((o, k) => {
+            const op = `${bp}.overrides[${k}]`;
+            if (!isObj(o)) return err(op, 'expected an object');
+            if (typeof o.pattern !== 'string' || !(o.pattern in patterns)) err(`${op}.pattern`, `unknown pattern ${JSON.stringify(o.pattern)}`);
+            if (range(op, o.startBar, o.endBar) && ok && ((o.startBar as number) < (b.startBar as number) || (o.endBar as number) > (b.endBar as number))) err(op, 'runs outside its block');
+          });
+        }
         if (b.movements !== undefined) {
           if (!Array.isArray(b.movements)) return err(`${bp}.movements`, 'expected an array');
           b.movements.forEach((m, k) => {

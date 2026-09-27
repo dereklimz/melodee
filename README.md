@@ -17,11 +17,16 @@ npx vitest run   # geometry, validator, and every mock track checked against the
 Each track is one JSON file in `public/tracks/`, listed in `public/tracks/index.json`. Positions are bars,
 1-indexed, `endBar` inclusive. Swap a file or add an id to the index and the view changes with no code change.
 Types live in `src/types/track.ts`; `src/lib/validate.ts` rejects malformed files with the path of the bad field.
-`harmony.barsPerChord` is an optional addition to the spec's data model (default 2).
+Additions to the spec's data model, all optional:
+- `harmony.barsPerChord` (default 2).
+- `elements[].patterns`: reusable drum-hit patterns (`voices` mapped to 16th-note steps) and note patterns written as
+  chord tones (`r 3 5 7 8`). `blocks[].pattern` picks one and `blocks[].overrides` swaps it for a bar range (fills, rolls).
+  Notes are resolved against the chord playing at each bar, so bass, synths, vocals and the chord row all follow the progression.
+  A block with no pattern falls back to a plain presence bar.
 
 ## Status
 
-Phase 1 of 3: mock data and the timeline renderer. Library click-to-load is in as a review aid.
+Phase 1 of 3: mock data and the timeline renderer. Library click-to-load and timeline zoom are in as review aids.
 Next: Phase 2 (drag and drop, analyzing state, fake-door modal), Phase 3 (playback, tooltips, dimension filter, zoom).
 Design reference: `design/reference.png`.
 

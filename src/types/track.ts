@@ -80,6 +80,40 @@ export interface Movement {
   endBar: number;
 }
 
+/** Chord tone a note is built from; resolved against the chord playing at that bar. */
+export type ChordTone = 'r' | '3' | '5' | '7' | '8';
+
+/** One note (or a stacked chord shape when `tone` is an array), positioned in 16th-note steps. */
+export interface NoteStep {
+  step: number;
+  len: number;
+  tone: ChordTone | ChordTone[];
+  /** Octave shift on top of the element's base octave. */
+  oct?: number;
+}
+
+/** Drum pattern: which 16th-note steps are on, per voice (e.g. clap, hat). */
+export interface HitPattern {
+  kind: 'hits';
+  lengthBars?: number;
+  voices: Record<string, number[]>;
+}
+
+/** Melodic pattern expressed in chord tones, so notes follow the progression. */
+export interface NotePattern {
+  kind: 'notes';
+  lengthBars?: number;
+  notes: NoteStep[];
+}
+
+export type Pattern = HitPattern | NotePattern;
+
+export interface PatternOverride {
+  startBar: number;
+  endBar: number;
+  pattern: string;
+}
+
 export interface Block {
   startBar: number;
   endBar: number;
@@ -88,12 +122,17 @@ export interface Block {
   entry: Edge;
   exit: Edge;
   movements?: Movement[];
+  /** Id of a pattern in the element's `patterns`; what the element plays inside the block. */
+  pattern?: string;
+  /** Swap to a different pattern for part of the block (fills, rolls, breakdown variants). */
+  overrides?: PatternOverride[];
 }
 
 export interface Element {
   id: string;
   name: string;
   family: ElementFamily;
+  patterns?: Record<string, Pattern>;
   blocks: Block[];
 }
 
@@ -116,3 +155,4 @@ export interface Track {
 }
 
 export const LOW_CONFIDENCE = 0.6;
+export const STEPS_PER_BAR = 16;

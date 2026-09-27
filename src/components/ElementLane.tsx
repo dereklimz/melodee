@@ -1,23 +1,32 @@
 import { barLeft, barRight, blockPolygon, fadeStops, movementPoints, toPath, toPoints, type Point, type Scale } from '../lib/geometry';
-import { LOW_CONFIDENCE, type Block, type Element, type ElementFamily, type FxEvent, type Movement } from '../types/track';
+import { BASE_OCTAVE, STRIP_H, type LaneMetrics } from '../lib/layout';
+import { expandHits, expandNotes } from '../lib/patterns';
+import { FAMILY_GRADIENT } from '../lib/theme';
+import { LOW_CONFIDENCE, type Block, type Element, type ElementFamily, type FxEvent, type Harmony, type Movement } from '../types/track';
 
 interface LaneProps {
   element?: Element;
   family: ElementFamily;
+  metrics: LaneMetrics;
+  harmony: Harmony;
+  totalBars: number;
   events?: FxEvent[];
   scale: Scale;
   y: number;
-  h: number;
 }
 
-export function ElementLane({ element, family, events = [], scale, y, h }: LaneProps) {
-  const hasEvents = events.length > 0;
-  const top = hasEvents ? y + 30 : y + 9;
-  const bot = y + h - (hasEvents ? 4 : 9);
+export function ElementLane({ element, family, metrics, harmony, totalBars, events = [], scale, y }: LaneProps) {
+  const isFx = metrics.kind === 'fx';
+  const notesTop = isFx ? y + 30 : y + 6;
+  const notesBot = isFx ? y + metrics.h - 4 : y + 6 + metrics.notesH;
+  const stripTop = notesBot + 6;
+  const x0 = barLeft(scale, 1);
+  const x1 = barRight(scale, totalBars);
   return (
     <g>
+      {metrics.strip && <rect x={x0} y={stripTop} width={x1 - x0} height={STRIP_H} rx={5} fill="#14164A" opacity={0.4} />}
       {(element?.blocks ?? []).map((b, i) => (
-        <BlockShape key={i} id={`${family}-${i}`} block={b} family={family} scale={scale} top={top} bot={bot} name={element?.name ?? family} />
+        <BlockShape key={i} id={`${family}-${i}`} block={b} element={element!} family={family} metrics={metrics} harmony={harmony} scale={scale} top={notesTop} bot={notesBot} stripTop={stripTop} name={element?.name ?? family} />
       ))}
       {events.map((e, i) => (
         <FxMarker key={i} event={e} scale={scale} top={y + 4} bot={y + 28} />
@@ -26,9 +35,12 @@ export function ElementLane({ element, family, events = [], scale, y, h }: LaneP
   );
 }
 
-interface BlockProps { id: string; block: Block; family: ElementFamily; scale: Scale; top: number; bot: number; name: string }
+interface BlockProps { id: string; block: Block; element: Element; family: ElementFamily; metrics: LaneMetrics; harmony: Harmony; scale: Scale; top: number; bot: number; stripTop: number; name: string }
 
-function BlockShape({ id, block, family, scale, top, bot, name }: BlockProps) {
+/** Path of one small rectangle per event, merged into a single string so a block is one DOM node. */
+const rect = (x: number, y: number, w: number, h: number) => `M${x.toFixed(1)},${y.toFixed(1)}h${w.toFixed(1)}v${h.toFixed(1)}h-${w.toFixed(1)}z`;
+
+function BlockShape({ id, block, element, family, metrics, harmony, scale, top, bot, stripTop, name }: BlockProps) {
   const x0 = barLeft(scale, block.startBar) + 1;
   const x1 = barRight(scale, block.endBar) - 1;
   const ppb = scale.ppb;
@@ -38,9 +50,27 @@ function BlockShape({ id, block, family, scale, top, bot, name }: BlockProps) {
   const fades = fadeStops(x0, x1, block.entry, block.exit, ppb);
   const hasFade = fades.entry > 0 || fades.exit > 0;
   const grad = `url(#g-${family})`;
+  const noteColor = FAMILY_GRADIENT[family][0];
   const w = x1 - x0;
   const wedgeW = (bars = 0) => Math.min(bars * ppb, w / 2);
-  const tall = bot - top >= 26;
+
+  // What the block plays: hits (drums) or notes (melodic), drawn over a faint backdrop.
+  let layer = '';
+  if (block.pattern && metrics.kind === 'hits') {
+    const rowH = (bot - top) / metrics.voices.length;
+    const tickW = Math.max((ppb / 16) * 0.7, 1);
+    layer = expandHits(element, block)
+      .map((e) => rect(barLeft(scale, 1) + e.pos * ppb, top + metrics.voices.indexOf(e.voice) * rowH + 1, tickW, Math.max(rowH - 2, 2)))
+      .join('');
+  } else if (block.pattern && metrics.kind === 'notes') {
+    const rows = metrics.pitchMax - metrics.pitchMin + 1;
+    const rowH = Math.min(6, (bot - top) / rows);
+    const offset = (bot - top - rowH * rows) / 2;
+    layer = expandNotes(element, block, harmony, BASE_OCTAVE[family] ?? 4)
+      .map((e) => rect(barLeft(scale, 1) + e.pos * ppb, top + offset + (metrics.pitchMax - e.pitch) * rowH, Math.max(e.len * ppb - 0.6, 1), Math.max(rowH - 0.6, 2.4)))
+      .join('');
+  }
+  const detailed = layer !== '';
 
   const edgeLines: Array<{ a: Point; b: Point }> = [];
   if (block.entry.type === 'highpass_sweep') edgeLines.push({ a: poly[0], b: poly[3] });
@@ -56,7 +86,8 @@ function BlockShape({ id, block, family, scale, top, bot, name }: BlockProps) {
   if (block.entry.type === 'reverb_wash') washes.push({ x: x0, w: wedgeW(block.entry.bars) });
   if (block.exit.type === 'reverb_wash') washes.push({ x: x1 - wedgeW(block.exit.bars), w: wedgeW(block.exit.bars) });
 
-  const tip = `${name} · bars ${block.startBar}–${block.endBar}`;
+  const tip = `${name} · bars ${block.startBar}–${block.endBar}${block.pattern ? ` · ${block.pattern}` : ''}`;
+  const backOpacity = detailed ? (low ? 0.1 : 0.2) : low ? 0.3 : 0.8;
 
   return (
     <g className="block-g" data-element={name} data-start={block.startBar} data-end={block.endBar} data-confidence={block.confidence}>
@@ -76,11 +107,12 @@ function BlockShape({ id, block, family, scale, top, bot, name }: BlockProps) {
       )}
       <g mask={hasFade ? `url(#m-${id})` : undefined}>
         <g className="mark dim-time">
-          <polygon points={toPoints(poly)} fill={grad} stroke={grad} strokeWidth={3} strokeLinejoin="round" fillOpacity={low ? 0.3 : 0.8} strokeOpacity={low ? 0.3 : 0.8} />
-          {low && <polygon points={toPoints(poly)} fill="none" stroke="#fff" strokeOpacity={0.95} strokeWidth={1.4} strokeDasharray="4 3" strokeLinejoin="round" />}
+          <polygon points={toPoints(poly)} fill={grad} stroke={grad} strokeWidth={3} strokeLinejoin="round" fillOpacity={backOpacity} strokeOpacity={backOpacity} />
+          {low && <polygon points={toPoints(poly)} fill="none" stroke="#fff" strokeOpacity={0.9} strokeWidth={1.4} strokeDasharray="4 3" strokeLinejoin="round" />}
         </g>
+        {detailed && <path className="mark dim-time" d={layer} fill={noteColor} opacity={low ? 0.8 : 1} />}
         {washes.map((s, i) => (
-          <rect key={`w${i}`} className="mark dim-spatial" x={s.x} y={top + inset} width={s.w} height={bot - top - inset * 2} rx={4} fill="#fff" opacity={0.32} filter="url(#f-blur)" />
+          <rect key={`w${i}`} className="mark dim-spatial" x={s.x} y={top + inset} width={s.w} height={bot - top - inset * 2} rx={4} fill="#fff" opacity={0.28} filter="url(#f-blur)" />
         ))}
       </g>
       {edgeLines.map((l, i) => (
@@ -89,7 +121,7 @@ function BlockShape({ id, block, family, scale, top, bot, name }: BlockProps) {
       {fadeRamps.map((l, i) => (
         <line key={`f${i}`} className="mark dim-volume" x1={l.a[0]} y1={l.a[1]} x2={l.b[0]} y2={l.b[1]} stroke="#fff" strokeWidth={1} strokeLinecap="round" opacity={0.35} />
       ))}
-      {tall && (block.movements ?? []).map((m, i) => <MovementCurve key={i} m={m} scale={scale} top={top + 6} bot={bot - 6} />)}
+      {metrics.strip && (block.movements ?? []).map((m, i) => <MovementCurve key={i} m={m} scale={scale} top={stripTop + 2} bot={stripTop + STRIP_H - 2} />)}
     </g>
   );
 }

@@ -10,7 +10,7 @@ export function TrackHero({ track }: { track: TrackInfo }) {
         <div className="hero-artist">{track.artist}</div>
       </div>
       <div className="chips">
-        <span className="chip">{track.bpm} BPM</span>
+        <span className="chip">{track.bpm} BPM · 4/4</span>
         <span className="chip">{track.key}</span>
         <span className="chip">{track.totalBars} bars</span>
         <span className="chip">{trackLength(track)}</span>

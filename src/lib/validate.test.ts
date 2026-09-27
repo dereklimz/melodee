@@ -70,3 +70,28 @@ describe('time helpers', () => {
     expect(formatTime(243.8)).toBe('4:04');
   });
 });
+
+describe('patterns', () => {
+  it('rejects a block that points at a missing pattern', () => {
+    const t = load('demo-01');
+    t.elements[0].blocks[0].pattern = 'nope';
+    expect(validateTrack(t).join('\n')).toContain('unknown pattern');
+  });
+  it('rejects hit steps outside the pattern and note patterns on a drum element', () => {
+    const t = load('demo-01');
+    t.elements[0].patterns.four.voices.kick = [0, 16];
+    t.elements[1].patterns.groove = { kind: 'notes', notes: [{ step: 0, len: 1, tone: 'r' }] };
+    const msg = validateTrack(t).join('\n');
+    expect(msg).toContain('steps must be whole numbers 0-15');
+    expect(msg).toContain('takes hits patterns');
+  });
+  it('rejects an override outside its block', () => {
+    const t = load('demo-01');
+    t.elements[0].blocks[0].overrides = [{ startBar: 30, endBar: 90, pattern: 'four' }];
+    expect(validateTrack(t).join('\n')).toContain('runs outside its block');
+  });
+  it.each(['demo-01', 'demo-02', 'demo-03'])('%s: every non-fx block plays a pattern', (id) => {
+    const t = parseTrack(load(id));
+    for (const el of t.elements.filter((e) => e.family !== 'fx')) for (const b of el.blocks) expect(b.pattern, `${id} ${el.id} ${b.startBar}`).toBeDefined();
+  });
+});
