@@ -6,6 +6,8 @@ is hand-authored mock JSON — no audio analysis, no backend, just the UI.
 
 > *"Where does the bass drop out?"* · *"What's the chord progression in the build?"* · *"Which lane has the filter sweep?"*
 
+![Melodee screenshot](screenshot.png)
+
 ## Features
 
 - **Full-track breakdown.** Sections, energy curve, chord progression, and per-instrument lanes, all
